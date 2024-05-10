@@ -10,8 +10,14 @@ let posts = [
 ];
 
 // common convention is to prefix your json api with /api
+// get all posts
 app.get('/api/posts', (req, res) => {
   res.json(posts);
+});
+
+// get single post
+app.get('/api/posts/:id', (req, res) => {
+  res.json(posts.filter((post) => post.id === parseInt(req.params.id)));
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
