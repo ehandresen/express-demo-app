@@ -30,4 +30,21 @@ router.get('/:id', (req, res) => {
   res.status(200).json(post);
 });
 
+// create new post
+router.post('/', (req, res) => {
+  const title = req.body.title;
+
+  if (!title) {
+    return res.status(400).json({ msg: 'Please add a title' });
+  }
+
+  posts.push({
+    id: posts.length + 1,
+    title: title,
+  });
+  res.status(201).json(posts);
+});
+
+//
+
 export default router;
