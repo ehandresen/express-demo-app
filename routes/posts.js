@@ -8,7 +8,7 @@ let posts = [
 ];
 
 // get all posts
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   const limit = parseInt(req.query.limit);
 
   if (!isNaN(limit) && limit > 0) {
@@ -25,6 +25,7 @@ router.get('/:id', (req, res, next) => {
 
   if (!post) {
     const error = new Error(`No post with id ${id}`);
+    error.status = 404;
     return next(error);
   }
 
@@ -32,11 +33,13 @@ router.get('/:id', (req, res, next) => {
 });
 
 // create new post
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const title = req.body.title;
 
   if (!title) {
-    return res.status(400).json({ msg: 'Please add a title' });
+    const error = new Error(`Please add a title`);
+    error.status = 400;
+    return next(error);
   }
 
   posts.push({
@@ -47,13 +50,15 @@ router.post('/', (req, res) => {
 });
 
 // update post
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
   const id = parseInt(req.params.id);
   const post = posts.find((post) => post.id === id); // 'post' is now a reference to the original object in the array
   console.log(post);
 
   if (!post) {
-    return res.status(404).json({ msg: `No post with id ${id}` });
+    const error = new Error(`No post with id ${id}`);
+    error.status = 404;
+    return next(error);
   }
 
   post.title = req.body.title;
@@ -67,7 +72,9 @@ router.delete('/:id', (req, res) => {
   const post = posts.find((post) => post.id === id);
 
   if (!post) {
-    return res.status(404).json({ msg: `No post with id ${id}` });
+    const error = new Error(`No post with id ${id}`);
+    error.status = 404;
+    return next(error);
   }
 
   posts = posts.filter((post) => post.id !== id);
