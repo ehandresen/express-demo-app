@@ -1,5 +1,6 @@
 import express from 'express';
 import posts from './routes/posts.js';
+import logger from './middleware/loggerMiddleware.js';
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -7,6 +8,9 @@ const app = express();
 // body parser middleware
 app.use(express.json()); // takes care of submitting raw json
 app.use(express.urlencoded({ extended: false })); // typically form-data
+
+// logger middleware
+app.use(logger);
 
 // routes
 // common convention is to prefix your json api with /api
