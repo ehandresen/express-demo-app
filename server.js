@@ -17,7 +17,14 @@ app.use(logger);
 // common convention is to prefix your json api with /api
 app.use('/api/posts', posts);
 
-// errorHandler
+// catch all errors
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
+});
+
+// error handler
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
