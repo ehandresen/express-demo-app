@@ -66,7 +66,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 // delete post
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
   const id = parseInt(req.params.id);
 
   const post = posts.find((post) => post.id === id);
